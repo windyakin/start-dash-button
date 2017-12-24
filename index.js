@@ -10,7 +10,7 @@ const Dash = Dasher(process.env.DASH_BUTTON_MAC_ADDRESS, null, null, 'all');
 
 (async () => {
   const video = await new VideoFile();
-  const omxPlayer = new OmxManager({ position: '0,0,800,400' });
+  const omxPlayer = new OmxManager();
   PiUtil.changeMonitorPower('off');
   Dash.on('detected', () => {
     console.log('detected');
