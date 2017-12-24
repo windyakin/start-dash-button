@@ -6,11 +6,12 @@ const logger = Log4js.getLogger('default');
 const VideoPlayer = require('./module/video-player.js');
 const PiUtil = require('./module/pi-util.js');
 
-Dotenv.config({ path: './.env' });
-const Dash = Dasher(process.env.DASH_BUTTON_MAC_ADDRESS, null, null, 'all');
-
 (async () => {
+  Dotenv.config({ path: './.env' });
+
   logger.level = 'debug';
+
+  PiUtil.changeMonitorPower('off');
 
   const videoPlayer = await new VideoPlayer();
   videoPlayer.on('play', (video) => {
@@ -21,7 +22,8 @@ const Dash = Dasher(process.env.DASH_BUTTON_MAC_ADDRESS, null, null, 'all');
     logger.info('Finish play video');
     PiUtil.changeMonitorPower('off');
   });
-  PiUtil.changeMonitorPower('off');
+
+  const Dash = Dasher(process.env.DASH_BUTTON_MAC_ADDRESS, null, null, 'all');
   Dash.on('detected', (dashId) => {
     logger.debug(`Detected: ${dashId}`);
     if (videoPlayer.Playing) {
