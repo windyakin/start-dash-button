@@ -11,6 +11,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "dotenv": "^4.0.0",
+    "log4js": "^2.4.1",
     "node-dash-button": "^0.6.1",
     "omx-manager": "^0.1.4"
   }
