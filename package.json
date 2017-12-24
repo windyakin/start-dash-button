@@ -9,6 +9,7 @@
     "eslint-plugin-import": "^2.8.0"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "dotenv": "^4.0.0",
     "node-dash-button": "^0.6.1",
     "omx-manager": "^0.1.4"
