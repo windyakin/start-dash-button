@@ -1,24 +1,29 @@
 const Dasher = require('node-dash-button');
-const OmxManager = require('omx-manager');
 const Dotenv = require('dotenv');
 
-const VideoFile = require('./module/video-file.js');
+const VideoPlayer = require('./module/video-player.js');
 const PiUtil = require('./module/pi-util.js');
 
 Dotenv.config({ path: './.env' });
 const Dash = Dasher(process.env.DASH_BUTTON_MAC_ADDRESS, null, null, 'all');
 
 (async () => {
-  const video = await new VideoFile();
-  const omxPlayer = new OmxManager();
+  const videoPlayer = await new VideoPlayer();
+  videoPlayer.on('play', (video) => {
+    console.log(`video start (${video})`);
+    PiUtil.changeMonitorPower('on');
+  });
+  videoPlayer.on('stop', () => {
+    console.log('video end');
+    PiUtil.changeMonitorPower('off');
+  });
   PiUtil.changeMonitorPower('off');
   Dash.on('detected', () => {
     console.log('detected');
-    PiUtil.changeMonitorPower('on');
-    const player = omxPlayer.create(video.getRandom(), { '--win': '0,0,800,480' });
-    player.play();
-    player.on('end', () => {
-      console.log('Video play end');
-    });
+    if (videoPlayer.Playing) {
+      videoPlayer.stop();
+    } else {
+      videoPlayer.play();
+    }
   });
 })();
